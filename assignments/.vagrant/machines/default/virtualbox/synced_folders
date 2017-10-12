@@ -1,0 +1,1 @@
+{"virtualbox":{"/var/www":{"guestpath":"/var/www","hostpath":"C:/Users/Ness_/Documents/Github/FullStack-LORD/assignments/www","disabled":false,"__vagrantfile":true},"/vagrant":{"guestpath":"/vagrant","hostpath":"C:/Users/Ness_/Documents/Github/FullStack-LORD/assignments","disabled":false,"__vagrantfile":true}}}
