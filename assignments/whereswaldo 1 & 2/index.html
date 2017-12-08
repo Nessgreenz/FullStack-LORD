@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Where's Waldo</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="./css/the-big-picture.css" rel="stylesheet">
+    <link href="./css/magnifier.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: black;
+            font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+            height: 100%;
+        }
+        
+        #thumb {
+            width: 1024px;
+            height: 800px;
+			margin-bottom: 400px;
+        }
+		#timer {
+  width: 500px;
+  font-size: 70px;
+  background-color: black;
+  color: limegreen;
+  padding: 25px;
+  border-radius: 10px;
+}
+
+#hh {margin-left: 45px;}
+#mm {margin-left: 80px;}
+#ss {margin-left: 70px;}
+#ms {margin-left: 45px;}
+
+
+
+
+#go    { background-color: limegreen; }
+
+#stop  { background-color: red;  display: none; }
+
+#clear { background-color: yellow; display: none;}
+
+body, button {
+  font-family: 'Courier';
+}
+        
+        
+        .mycenter {
+            margin-left: auto;
+            margin-right: auto;
+        }
+		
+		
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">
+        <div class="container">
+            <a class="navbar-brand" href="#">Where's Waldo</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+				<a>
+                    <li class="nav-item active">
+                    <button id="go" onclick = 'startTimer()'class="btn btn-success">Start Game</button>
+              </a>
+			  <a>
+                    </li>
+                    <li class="nav-item">
+                          <button id="stop" onclick = 'stopTimer()' class="btn btn-success">Pause Game</button>
+                    </li>
+					</a>
+					<a>
+					<li class="nav-item">
+                          <button id="clear"  onclick = 'clearTimer()' class="btn btn-success">Reset Game</button>
+                    </li>
+					</a>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Content -->
+	
+		<div id='timer'>00:00:00:00</div>
+		<div id='labels'>
+			<span id='hh'>Hours</span>
+			<span id='mm'>Minutes</span>
+			<span id='ss'>Seconds</span>
+			<span id='ms'>Centiseconds</span>
+		</div>
+		
+		
+		</div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col-12 col-md-auto mycenter">
+                <img src="./images/crowd.jpg" id="thumb">
+            </div>
+            <div class="col col-lg-2"></div>
+        </div>
+    </div>
+
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/bootstrap.bundle.min.js"></script>
+    <script src="./js/Event.js"></script>
+    <script src="./js/Magnifier.js"></script>
+    <script>
+        var evt = new Event();
+        var m = new Magnifier(evt);
+		var board;
+		var image;
+		var xcoord=ycoord=0;
+		image = document.getElementById('thumb'); // waldo id
+		waldo_img();
+		blur(image,10);
+
+		
+		
+		
+		// -------- TIMER----------
+		
+		// global object
+T = {} ;
+T.timerDiv = document.getElementById('timer');
+
+function displayTimer() {
+  // initilized all local variables:
+  var hours='00', minutes='00',
+  miliseconds=0, seconds='00',
+  time = '',
+  timeNow = new Date().getTime(); // timestamp (miliseconds)
+
+  T.difference = timeNow - T.timerStarted;
+
+  // milliseconds
+  if(T.difference > 10) {
+    miliseconds = Math.floor((T.difference % 1000) / 10);
+    if(miliseconds < 10) {
+      miliseconds = '0'+String(miliseconds);
+    }
+  }
+  // seconds
+  if(T.difference > 1000) {
+    seconds = Math.floor(T.difference / 1000);
+    if (seconds > 60) {
+      seconds = seconds % 60;
+    }
+    if(seconds < 10) {
+      seconds = '0'+String(seconds);
+    }
+  }
+
+  // minutes
+  if(T.difference > 60000) {
+    minutes = Math.floor(T.difference/60000);
+    if (minutes > 60) {
+      minutes = minutes % 60;
+    }
+    if(minutes < 10) {
+      minutes = '0'+String(minutes);
+    }
+  }
+
+  // hours
+  if(T.difference > 3600000) {
+    hours = Math.floor(T.difference/3600000);
+    // if (hours > 24) {
+    // 	hours = hours % 24;
+    // }
+    if(hours < 10) {
+      hours = '0'+String(hours);
+    }
+  }
+
+  time  =  hours   + ':'
+  time += minutes + ':'
+  time += seconds + ':'
+  time += miliseconds;
+
+  T.timerDiv.innerHTML = time;
+}
+
+function startTimer() {
+  // save start time
+  blur(image,0);
+  T.timerStarted = new Date().getTime()
+  console.log('T.timerStarted: '+T.timerStarted)
+
+  if (T.difference > 0) {
+    T.timerStarted = T.timerStarted - T.difference
+  }
+  // update timer periodically
+  T.timerInterval = setInterval(function() {
+    displayTimer()
+  }, 10);
+
+  // show / hide the relevant buttons:
+  document.getElementById('go').style.display="none";
+  document.getElementById('stop').style.display="inline";
+  document.getElementById('clear').style.display="none";
+}
+
+function stopTimer() {
+  clearInterval(T.timerInterval); // stop updating the timer
+	blur(image,10);
+  document.getElementById('stop').style.display="none";
+  document.getElementById('go').style.display="inline";
+  document.getElementById('clear').style.display="inline";
+}
+
+function clearTimer() {
+  clearInterval(T.timerInterval);
+  T.timerDiv.innerHTML = "00:00:00:00"; // reset timer to all zeros
+  T.difference = 0;
+  blur(image,10);
+
+  document.getElementById('stop').style.display="none";
+  document.getElementById('go').style.display="inline";
+  document.getElementById('clear').style.display="none";
+}
+
+//-------------------END OF TIMER----------
+
+
+//blur function
+  function blur(elem,x){
+            var filterVal = 'blur('+x+'px)';
+            $(elem).css('filter', filterVal)
+            .css('webkitFilter', filterVal)
+            .css('mozFilter', filterVal)
+            .css('oFilter', filterVal)
+            .css('msFilter', filterVal);
+        }
+		
+		
+// function to get image
+function waldo_img()
+{
+$.ajax({
+                url: "http://45.55.74.4/waldo/api/api.php/get_Image",
+                type: 'GET',
+                success: function(data) {
+					console.log(data);
+					board = data[0].game_id;
+					//set path to image
+					image.src = "./game_images/" + data[0].game_id + "." + data[0].img_type;
+                },
+                data: []
+            });
+		}
+
+		$("#thumb").click(function(e) {
+			var offset = $(this).offset();
+			xcoord = Math.round(e.pageX - offset.left);
+			ycoord = Math.round(e.pageY - offset.top);
+            console.log("User clicked at position x="+xcoord + " y="+ycoord); //change output string to your own
+            var document = {
+                'id':board,
+                'x':xcoord,
+                'y':ycoord
+            }
+            //call route in api to query actual waldo location
+            $.ajax({
+                url: "http://45.55.74.4/waldo/api/api.php/waldo_Location",
+                type: 'GET',
+                success: function(data) {
+						if (data == true)
+							{
+								confirm(" Mr/Miss 20/20 Vision , you found WALDO!!!");
+								clearTimer();
+							}
+							else
+							confirm(" PUT ON YOUR SPECTACLES, YOUR VISION IS IMPAIRED !!");
+					
+                },
+                data: document
+            });
+		});
+		
+		
+
+
+
+
+
+
+
+    </script>
+
+</body>
+
+</html>

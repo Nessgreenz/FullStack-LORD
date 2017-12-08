@@ -244,11 +244,15 @@ class MyAPI extends API
      */
     protected function delete_user()
     {
-		$this->mh->setDbcoll('users');
-		if ($this->method == "DELETE") {
-		if (count($this->request) > 0) {
-                $result = $this->mh->delete($this->request['_id']);
-            } else {
+        $this->mh->setDbcoll('users');
+        
+        if ($this->method == "DELETE") {
+            
+            if(count($this->request) > 0){
+                $this->request['_id'] = (int)$this->request['_id'];
+                $result = $this->mh->delete([$this->request]);
+            }
+            else{
                 $result = $this->mh->delete();
             }
             return $result;

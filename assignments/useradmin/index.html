@@ -1,0 +1,443 @@
+﻿<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Api Test</title>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+    <link rel="icon" href="images/favicon.png">
+
+    <!-- Bootstrap core CSS -->
+    <link href="http://45.55.74.4/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet/less" type="text/css" href="./css/navs.less" />
+
+
+    <link href="http://45.55.74.4/css/cover.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <div>
+        <div id="reload">
+            <form action="http://45.55.74.4/useradmin-api/api.php/random_user">
+                <input class="btn btn-default" type="submit" value="Random users" />
+            </form>
+        </div>
+
+
+        <table id="example" class="display" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>First</th>
+                    <th>Last</th>
+                    <th>Phone</th>
+                    <th>Nat</th>
+                    <th>Location</th>
+                    <th>DOB</th>
+                    <th>Email</th>
+                    <th>Username</th>
+                    <th>Password</th>
+                    <th>Admin</th>
+                </tr>
+            </thead>
+
+            <tfoot>
+                <tr>
+                    <th>First</th>
+                    <th>Last</th>
+                    <th>Phone</th>
+                    <th>Nat</th>
+                    <th>Location</th>
+                    <th>DOB</th>
+                    <th>Email</th>
+                    <th>Username</th>
+                    <th>Password</th>
+                    <th>Admin</th>
+                </tr>
+            </tfoot>
+        </table>
+        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#adduser">Add User</button>
+
+
+
+
+        <!-- Modal form -->
+
+        <div class="container">
+            <div class="row">
+
+                <!-- adduser/ edituser modal-->
+                <div class="modal fade login-register-form" role="dialog" id="adduser">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </button>
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a data-toggle="tab" href="#add_user-form"> Add User <span class="glyphicon glyphicon-user"></span></a></li>
+                                    <li><a data-toggle="tab" href="#edit_user-form"> Edit User <span class="glyphicon glyphicon-pencil"></span></a></li>
+
+
+                                </ul>
+
+                            </div>
+                            <!-- adduser-->
+                            <div class="modal-body">
+                                <div class="tab-content">
+
+                                    <div id="add_user-form" class="tab-pane fade in active">
+                                        <form method="POST">
+                                            <div class="form-group">
+                                                <label for="first-name">First Name:</label>
+                                                <input type="text" class="form-control" id="first-name" placeholder="Kevin" name="first" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="last-name">Last Name:</label>
+                                                <input type="text" class="form-control" id="last-name" placeholder="Lord" name="last" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="phone">Phone:</label>
+                                                <input type="text" class="form-control" id="phone-num" placeholder="xxx-xxx-xxxx" name="phone" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="nat">Nationality:</label>
+                                                <input type="text" class="form-control" id="nat" placeholder="GND" name="nat" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="city">City:</label>
+                                                <input type="text" class="form-control" id="city" placeholder="New York" name="city" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="dob">Date of Birth:</label>
+                                                <input type="text" class="form-control" id="dob" placeholder="MM/DD/YYYY" name="dob" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="newpwd">Email:</label>
+                                                <input type="email" class="form-control" id="email" placeholder="killer@wth.com" name="email" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="user-name">Username:</label>
+                                                <input type="text" class="form-control" id="user-name" placeholder="Dj_Ness" name="username" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="password">Password:</label>
+                                                <input type="password" class="form-control" id="pwd" placeholder="*****" name="password">
+                                            </div>
+
+
+                                            <button type="submit" class="btn btn-default">Add User</button>
+                                        </form>
+                                    </div>
+                                    <!-- update user -->
+
+                                    <div id="edit_user-form" class="tab-pane fade">
+                                        <form method="POST">
+                                            <div class="form-group">
+                                                <input type="hidden" id="update_id" name="_id">
+                                                <label for="first-name">First Name:</label>
+                                                <input type="text" class="form-control" id="nfirst-name" placeholder="Kevin" name="first">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="last-name">Last Name:</label>
+                                                <input type="text" class="form-control" id="nlast-name" placeholder="Lord" name="last">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="phone">Phone:</label>
+                                                <input type="text" class="form-control" id="nphone-num" placeholder="xxx-xxx-xxxx" name="phone">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="nat">Nationality:</label>
+                                                <input type="text" class="form-control" id="nnat" placeholder="GND" name="nat">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="city">City:</label>
+                                                <input type="text" class="form-control" id="ncity" placeholder="New York" name="city">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="dob">Date of Birth:</label>
+                                                <input type="text" class="form-control" id="ndob" placeholder="MM/DD/YYYY" name="dob">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="newpwd">Email:</label>
+                                                <input type="text" class="form-control" id="nemail" placeholder="killer@wth.com" name="email">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="user-name">Username:</label>
+                                                <input type="text" class="form-control" id="nuser-name" placeholder="Dj_Ness" name="username">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="password">Password:</label>
+                                                <input type="text" class="form-control" id="npwd" placeholder="*****" name="password">
+                                            </div>
+
+
+                                            <button type="submit" class="btn btn-default" action="">Update User</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+        <!-- END Modal -->
+
+        <div class="modal fade delete-form" role="dialog" id="deleteuser">
+            <div class="modal-dialog">
+
+                <!-- delete user Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Delete User</h4>
+                    </div>
+                    <div class="modal-body" id="deleteuserA">
+                        <form method="DELETE">
+                            <p>Are you sure? This user will be deleted.</p>
+                            <button type="submit" class="btn btn-default">Ok</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://45.55.74.4/js/jquery-3.2.1.min.js"></script>
+    <!-- <script src="./js/tether.min.js"></script> -->
+    <script src="http://45.55.74.4/js/bootstrap.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="http://45.55.74.4/js/scripts.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script>
+        //table.row( '#myRowId' ).data( myUpdateObjectOrArray );
+        //table.draw();
+        //var data = table.rows( { selected: true } ).data()[0];
+        //data.DT_RowId gives the required ID.
+        var del;
+        $('#deleteuserA').submit(function (event) {
+            delete_users(del); // delete user by _id
+
+        })
+        $('#reload').submit(function (event) {
+            window.location.href = "http://45.55.74.4/useradmin-api/"
+
+        })
+
+        function delete_users() {
+            $.ajax({
+                url: "http://45.55.74.4/useradmin-api/api.php/delete_user?_id=" + del,
+                type: 'DELETE',
+                success: function (data) {
+                    console.log(data);
+                    window.location.href = "http://45.55.74.4/useradmin-api/"
+                },
+                data: []
+            });
+        }
+
+        function get_users() {
+            $.ajax({
+                url: "http://45.55.74.4/useradmin-api/api.php/find_user",
+                type: 'GET',
+                success: function (data) {
+                    load_data_tables(data);
+                },
+                data: []
+            });
+        }
+        function add_users() {
+            $.ajax({
+                url: "http://45.55.74.4/useradmin-api/api.php/add_user",
+                type: 'POST',
+                success: function (data) {
+                    load_data_tables(data);
+                },
+                data: []
+            });
+        }
+
+
+        function load_data_tables(data) {
+            var filtered = [];
+            var newobj = {
+                "data": []
+            };
+
+            for (let i = 0; i < data.length; i++) {
+                temp = [
+                    data[i].first,
+                    data[i].last,
+                    data[i].phone,
+                    data[i].nat,
+                    data[i].city,
+                    data[i].dob,
+                    data[i].email,
+                    data[i].username,
+                    data[i].password,
+                    '<i data-toggle="modal" data-target="#adduser" class="fa fa-pencil-square-o edit_user"  aria-hidden="true" data-id="' + data[i]['_id'] + '"></i> <i class="fa fa-trash delete_user" data-toggle="modal" data-target="#deleteuser" aria-hidden="true" data-id="' + data[i]['_id'] + '"></i>'
+                ];
+                newobj["data"].push(temp);
+            }
+            //console.log(JSON.stringify(newobj));
+
+            var table = $('#example').DataTable({
+                "data": newobj.data,
+                "initComplete": function (settings, json) {
+                    console.log('DataTables has finished its initialisation.');
+                    add_admin_events();
+                    $('#example tbody').on('click', 'tr', function () {
+                        $(this).toggleClass('selected');
+                        console.log(table.row(this).data());
+
+                    });
+
+                }
+            });
+
+            table.on('draw', function () {
+                console.log('Table redrawn');
+                add_admin_events();
+            });
+
+        }
+
+        function add_admin_events() {
+            $('.delete_user').click(function (event) {
+                var $this = $(this);
+
+                del = $(this).data().id;
+                event.preventDefault();
+
+                console.log($this);
+                console.log($this.data());
+            });
+            $('.edit_user').click(function () {
+                var $this = $(this);
+                $("#update_id").attr("value", $this.data().id); //id of user to be updated
+
+
+                //variable stores current table
+                var tablebody = $('#example').DataTable();
+
+               // load table into edit form 
+                $('#example tbody').on('click', 'tr', function () {
+                    document.getElementById("nfirst-name").defaultValue = tablebody.row(this).data()[0];
+                    document.getElementById("nlast-name").defaultValue = tablebody.row(this).data()[1];
+                    document.getElementById("nphone-num").defaultValue = tablebody.row(this).data()[2];
+                    document.getElementById("nnat").defaultValue = tablebody.row(this).data()[3];
+                    document.getElementById("ncity").defaultValue = tablebody.row(this).data()[4];
+                    document.getElementById("ndob").defaultValue = tablebody.row(this).data()[5];
+                    document.getElementById("nemail").defaultValue = tablebody.row(this).data()[6];
+                    document.getElementById("nuser-name").defaultValue = tablebody.row(this).data()[7];
+                    document.getElementById("npwd").defaultValue = tablebody.row(this).data()[8];
+                    console.log($this);
+                    console.log($this.data());
+                });
+            });
+        }
+        $("#edit_user-form").submit(function (event) { // store form data
+            console.log($("#update_id").val());
+            event.preventDefault();
+            var document = {
+                "_id": $("#update_id").val(),
+                "first": $("#nfirst-name").val(),
+                "last": $("#nlast-name").val(),
+                "phone": $("#nphone-num").val(),
+                "nat": $('#nnat').val(),
+                "city": $('#ncity').val(),
+                "dob": $('#ndob').val(),
+                "email": $('#nemail').val(),
+                "username": $('#nuser-name').val(),
+                "password": $('#npwd').val()
+            }
+            url = "http://45.55.74.4/useradmin-api/api.php/update_user";
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: document,
+                success: function (data) {
+                    console.log(data);
+                    window.location.href = "http://45.55.74.4/useradmin-api/" //reload table
+                }
+            });
+        });
+
+        $("#add_user-form").submit(function (event) { // store form data
+            event.preventDefault();
+            var document = {
+                "first": $("#first-name").val(),
+                "last": $("#last-name").val(),
+                "phone": $("#phone-num").val(),
+                "nat": $('#nat').val(),
+                "city": $('#city').val(),
+                "dob": $('#dob').val(),
+                "email": $('#email').val(),
+                "username": $('#user-name').val(),
+                "password": $('#pwd').val()
+            }
+            url = "http://45.55.74.4/useradmin-api/api.php/add_user";
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: document,
+                success: function (data) {
+                    console.log(data);
+                    window.location.href = "http://45.55.74.4/useradmin-api/" //reload table 
+                }
+
+            });
+        });
+
+
+
+
+        get_users();
+    </script>
+</body>
+
+</html>

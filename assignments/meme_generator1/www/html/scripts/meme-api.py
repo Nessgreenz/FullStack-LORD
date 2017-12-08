@@ -17,7 +17,6 @@ client = MongoClient()
 
 # Flask Quickstart Guide:
 # http://flask.pocoo.org/docs/0.12/quickstart/
-
 app = Flask(__name__)
 CORS(app)
 
@@ -80,7 +79,7 @@ def site_map():
 # End Helper methods##################################################
 
 # Mongo Help
-# 
+#
 # Add items to mongo (POST):
 #     Insert an item with an _id of 1:
 #     _id = client['memes_db']['users'].insert({"_id":"1","other":"stuff"})
@@ -91,16 +90,17 @@ def site_map():
 #
 # Get the count of a result:
 #     Get the count of records with email of bob@google.com
-#     count = client['memes_db']['users'].find({"email":"bob@google.com"}).count()
+#     count =
+#     client['memes_db']['users'].find({"email":"bob@google.com"}).count()
 #
-# For more go to: 
+# For more go to:
 #     http://api.mongodb.com/python/current/api/pymongo/collection.html
 
 # Request Help
 #
 # Figure out what kind of request it is:
 #    request.method == POST, GET, PUT, DELETE
-# 
+#
 # If the request.method is POST params will be in:
 #    request.form['var1']
 #    request.form['var2']
@@ -116,7 +116,6 @@ def site_map():
 ######################################################################
 
 # User Routes ########################################################
-
 """
 POST    /user/new    : Add a new user to the site
 POST    /user/find   : Retrieve (authenticate) user
@@ -153,7 +152,7 @@ def user(action=None):
     """
     unique_vals = ['email','username']
     if action == 'new':
-        # create empty document 
+        # create empty document
         document = {}
 
         count = client['memes_db']['users'].find().count()
@@ -208,8 +207,8 @@ def user(action=None):
         if 'password' in db_password[0]:
             print(db_password[0]['password'])
 
-            # check hashed passwords match here ... 
-            # if not, redirect to 
+            # check hashed passwords match here ...
+            # if not, redirect to
 
         return jsonify({"success":True})
     else: # its a delete
@@ -255,8 +254,8 @@ def image():
     """
     pass
 
-@app.route('/meme', methods=['POST','GET','DELETE'])
-def meme():
+@app.route('/meme/<action>', methods=['POST','GET','DELETE'])
+def meme(action=None):
     """
     Meme Document:
     {
@@ -293,7 +292,22 @@ def meme():
         - tag (key word search)
         - userid or email of owner ('anonymous' otherwise)
     """
+    if action == "new":
+        document = {}
+        for a, b in request.form.items():
+           document[a] = b
+           
+        document["owner_id"] = 2
+        document["file_id"] = 5
+        
+        _id = client['memes_db']['memes'].insert(document)
+        print(_id)
+		
+        return jsonify({"success":True})
+		
     pass
+       
+    
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True, port=5050)
